@@ -17,9 +17,7 @@ import           Cardano.Wallet.API.Request.Filter
 import           Cardano.Wallet.API.Request.Pagination
 import           Cardano.Wallet.API.Request.Sort
 import           Cardano.Wallet.API.Response
-import           Cardano.Wallet.API.Types
 import           Cardano.Wallet.API.V1.Generic (gconsName)
-import           Cardano.Wallet.API.V1.Migration.Types (MigrationError (..))
 import           Cardano.Wallet.API.V1.Parameters
 import           Cardano.Wallet.API.V1.Swagger.Example
 import           Cardano.Wallet.API.V1.Types
@@ -29,7 +27,6 @@ import           Pos.Chain.Update (SoftwareVersion)
 import           Pos.Core.NetworkMagic (NetworkMagic (..))
 import           Pos.Util.CompileInfo (CompileTimeInfo, ctiGitRevision)
 import           Pos.Util.Servant (CustomQueryFlag, LoggingApi)
-import           Pos.Wallet.Web.Swagger.Instances.Schema ()
 
 import           Control.Lens (At, Index, IxValue, at, (?~))
 import           Data.Aeson (encode)
@@ -50,7 +47,6 @@ import           Servant.Swagger.UI.ReDoc (redocFiles)
 
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Map.Strict as M
-import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Pos.Core as Core
@@ -176,20 +172,6 @@ setDescription endpoint str =
 
 instance HasSwagger a => HasSwagger (LoggingApi config a) where
     toSwagger _ = toSwagger (Proxy @a)
-
-instance HasSwagger (apiType a :> res) =>
-         HasSwagger (WithDefaultApiArg apiType a :> res) where
-    toSwagger _ = toSwagger (Proxy @(apiType a :> res))
-
-instance HasSwagger (argA a :> argB a :> res) =>
-         HasSwagger (AlternativeApiArg argA argB a :> res) where
-    toSwagger _ = toSwagger (Proxy @(argA a :> argB a :> res))
-
-instance (KnownSymbols tags, HasSwagger subApi) => HasSwagger (Tags tags :> subApi) where
-    toSwagger _ =
-        let newTags    = map toText (symbolVals (Proxy @tags))
-            swgr       = toSwagger (Proxy @subApi)
-        in swgr & over (operationsOf swgr . tags) (mappend (Set.fromList newTags))
 
 instance
     ( Typeable res
@@ -370,9 +352,6 @@ $errors
     , mkRow fmtErr $ NodeIsStillSyncing genExample
     , mkRow fmtErr $ CannotCreateAddress "Cannot create derivation path for new address in external wallet."
     , mkRow fmtErr $ RequestThrottled 42
-
-    -- 'MigrationError'
-    , mkRow fmtErr $ MigrationFailed "Migration failed."
 
     -- 'JSONValidationError'
     , mkRow fmtErr $ JSONValidationFailed "Expected String, found Null."

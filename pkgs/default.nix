@@ -14680,6 +14680,7 @@ license = stdenv.lib.licenses.bsd3;
 , ansi-wl-pprint
 , async
 , base
+, base64-bytestring
 , bytestring
 , canonical-json
 , cardano-crypto
@@ -14717,8 +14718,10 @@ license = stdenv.lib.licenses.bsd3;
 , filepath
 , formatting
 , generic-arbitrary
+, generics-sop
 , hedgehog
 , hspec
+, http-api-data
 , http-client
 , http-client-tls
 , http-conduit
@@ -14737,6 +14740,7 @@ license = stdenv.lib.licenses.bsd3;
 , parsec
 , pvss
 , QuickCheck
+, quickcheck-instances
 , random
 , reflection
 , safe-exceptions
@@ -14749,6 +14753,7 @@ license = stdenv.lib.licenses.bsd3;
 , stdenv
 , stm
 , streaming-commons
+, swagger2
 , systemd
 , tagged
 , template-haskell
@@ -14787,6 +14792,7 @@ ansi-terminal
 ansi-wl-pprint
 async
 base
+base64-bytestring
 bytestring
 canonical-json
 cardano-sl-binary
@@ -14815,7 +14821,9 @@ filelock
 filepath
 formatting
 generic-arbitrary
+generics-sop
 hspec
+http-api-data
 http-client
 http-client-tls
 http-conduit
@@ -14833,6 +14841,7 @@ optparse-applicative
 parsec
 pvss
 QuickCheck
+quickcheck-instances
 random
 reflection
 safe-exceptions
@@ -14844,6 +14853,7 @@ servant-server
 servant-swagger
 stm
 streaming-commons
+swagger2
 systemd
 tagged
 template-haskell
@@ -15394,6 +15404,7 @@ filepath
 fmt
 formatting
 free
+generic-arbitrary
 hashable
 lens
 lrucache
@@ -15404,6 +15415,7 @@ mtl
 neat-interpolation
 parsec
 plutus-prototype
+QuickCheck
 reflection
 safe-exceptions
 safecopy
@@ -15804,6 +15816,7 @@ license = stdenv.lib.licenses.mit;
 , hashable
 , hedgehog
 , hspec
+, http-api-data
 , lens
 , memory
 , mmorph
@@ -15875,6 +15888,7 @@ filepath
 fmt
 formatting
 hashable
+http-api-data
 lens
 memory
 mmorph
@@ -16553,7 +16567,6 @@ license = stdenv.lib.licenses.mit;
 , cardano-sl-crypto
 , cardano-sl-infra
 , cardano-sl-util
-, cardano-sl-wallet
 , cardano-sl-wallet-new
 , connection
 , cryptonite
@@ -16619,7 +16632,6 @@ cardano-sl-chain
 cardano-sl-core
 cardano-sl-crypto
 cardano-sl-util
-cardano-sl-wallet
 cardano-sl-wallet-new
 connection
 cryptonite
@@ -16669,7 +16681,6 @@ cardano-sl-chain
 cardano-sl-core
 cardano-sl-infra
 cardano-sl-util
-cardano-sl-wallet
 cardano-sl-wallet-new
 ekg
 ekg-core
@@ -16696,7 +16707,6 @@ aeson
 base
 bytestring
 cardano-sl-core
-cardano-sl-wallet
 cardano-sl-wallet-new
 hspec
 mtl
@@ -17283,8 +17293,11 @@ configureFlags = [
 "--ghc-option=-Wcompat"
 "--ghc-option=-Werror"
 ];
-isLibrary = false;
+isLibrary = true;
 isExecutable = true;
+libraryHaskellDepends = [
+base
+];
 executableHaskellDepends = [
 base
 cardano-sl
@@ -17399,7 +17412,6 @@ license = stdenv.lib.licenses.mit;
 , cardano-sl-networking
 , cardano-sl-util
 , cardano-sl-util-test
-, cardano-sl-wallet
 , cardano-sl-x509
 , containers
 , cpphs
@@ -17426,7 +17438,6 @@ license = stdenv.lib.licenses.mit;
 , silently
 , stdenv
 , stm
-, stm-chans
 , string-conv
 , tabl
 , tar
@@ -17470,7 +17481,6 @@ cardano-sl-db
 cardano-sl-infra
 cardano-sl-networking
 cardano-sl-util
-cardano-sl-wallet
 containers
 data-default
 directory
@@ -17490,7 +17500,6 @@ universum
 unordered-containers
 ];
 executableHaskellDepends = [
-acid-state-exts
 aeson
 aeson-options
 ansi-wl-pprint
@@ -17503,20 +17512,13 @@ cardano-report-server
 cardano-sl
 cardano-sl-binary
 cardano-sl-chain
-cardano-sl-chain-test
-cardano-sl-client
 cardano-sl-core
-cardano-sl-core-test
 cardano-sl-crypto
 cardano-sl-db
 cardano-sl-infra
-cardano-sl-networking
 cardano-sl-util
-cardano-sl-wallet
 cardano-sl-x509
-containers
 cryptonite
-data-default
 directory
 filepath
 formatting
@@ -17525,19 +17527,14 @@ lens
 lifted-async
 mtl
 neat-interpolation
-network-transport-tcp
 optparse-applicative
-optparse-generic
 process
 safe-exceptions
 serokell-util
 silently
-stm
-stm-chans
 tabl
 tar
 text
-time
 time-units
 universum
 unix
@@ -18178,6 +18175,7 @@ license = stdenv.lib.licenses.mit;
 , async
 , base
 , base58-bytestring
+, basement
 , beam-core
 , beam-migrate
 , beam-sqlite
@@ -18305,6 +18303,7 @@ aeson-pretty
 async
 base
 base58-bytestring
+basement
 beam-core
 beam-migrate
 beam-sqlite
